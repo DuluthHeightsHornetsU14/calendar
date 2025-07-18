@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thunderbolts Schedule</title>
+<link rel="manifest" href="manifest.json">
+<style>
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
+.container { max-width: 600px; margin: 0 auto; }
+.next-event { background: #007AFF; color: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; }
+.next-event h2 { margin: 0 0 10px 0; font-size: 24px; }
+.event { background: white; padding: 15px; margin-bottom: 10px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+.event-type { display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; margin-right: 8px; }
+.game { background: #FF3B30; color: white; }
+.practice { background: #34C759; color: white; }
+.event { background: #FF9500; color: white; }
+.time { font-weight: 600; }
+.location { color: #666; font-size: 14px; }
+.editable { border: 1px dashed #ccc; padding: 2px 4px; min-width: 50px; display: inline-block; }
+.coach-mode .editable:hover { background: #fffbcc; cursor: text; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1 id="teamName">Loading...</h1>
+  <div class="next-event" id="nextEvent"></div>
+  <h2>Next 7 Days</h2>
+  <div id="schedule"></div>
+</div>
+
+<script>
+const urlParams = new URLSearchParams(window.location.search);
+const isCoach = urlParams.get('edit') === 'coach';
+if (isCoach) document.body.classList.add('coach-mode');
+
+let scheduleData = { teamName: "Thunderbolts", events: [] };
+
+async function loadData() {
+  try {
+    const response = await fetch('data.json');
+    if (response.ok) {
+      scheduleData = await response.json();
+      renderSchedule();
+    }
+  } catch (e) {
+    console.log('Loading from cache or defaults');
+    renderSchedule();
+  }
+}
+
+function renderSchedule() {
+  document.getElementById('teamName').textContent = scheduleData.teamName;
+  
+  const now = new Date();
+  const weekFromNow = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+  
+  const upcomingEvents = scheduleData.events
+    .map(e => ({...e, dateObj: new Date(e.date)}))
+    .filter(e => e.dateObj >= now && e.dateObj <= weekFromNow)
+    .sort((a, b) => a.dateObj - b.dateObj);
+  
+  if (upcomingEvents.length > 0) {
+    const next = upcomingEvents[0];
+    document.getElementById('nextEvent').innerHTML = `
+      <h2>Next: ${next.type === 'game' ? 'Game' : next.type === 'practice' ? 'Practice' : 'Team Event'}</h2>
+      <div class="time">${formatDate(next.dateObj)} at ${next.time}</div>
+      <div class="location">${next.location}</div>
+      ${next.opponent ? `<div>vs ${next.opponent}</div>` : ''}
+    `;
+  }
+  
+  const scheduleHTML = upcomingEvents.map((event, index) => `
+    <div class="event">
+      <span class="event-type ${event.type}">${event.type.toUpperCase()}</span>
+      <span class="time ${isCoach ? 'editable' : ''}" data-field="date" data-index="${index}">${formatDate(event.dateObj)}</span>
+      at 
+      <span class="time ${isCoach ? 'editable' : ''}" data-field="time" data-index="${index}">${event.time}</span>
+      <div class="location ${isCoach ? 'editable' : ''}" data-field="location" data-index="${index}">${event.location}</div>
+      ${event.opponent ? `<div>vs <span class="${isCoach ? 'editable' : ''}" data-field="opponent" data-index="${index}">${event.opponent}</span></div>` : ''}
+    </div>
+  `).join('');
+  
+  document.getElementById('schedule').innerHTML = scheduleHTML || '<p>No events scheduled for the next 7 days.</p>';
+  
+  if (isCoach) setupEditing();
+}
+
+function formatDate(date) {
+  const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  return `${days[date.getDay()]}, ${months[date.getMonth()]} ${date.getDate()}`;
+}
+
+function setupEditing() {
+  document.querySelectorAll('.editable').forEach(el => {
+    el.contentEditable = true;
+    el.addEventListener('blur', saveEdit);
+  });
+}
+
+async function saveEdit(e) {
+  const field = e.target.dataset.field;
+  const index = parseInt(e.target.dataset.index);
+  const value = e.target.textContent.trim();
+  
+  const now = new Date();
+  const weekFromNow = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+  const upcomingEvents = scheduleData.events
+    .map((e, i) => ({...e, originalIndex: i, dateObj: new Date(e.date)}))
+    .filter(e => e.dateObj >= now && e.dateObj <= weekFromNow)
+    .sort((a, b) => a.dateObj - b.dateObj);
+  
+  const originalIndex = upcomingEvents[index].originalIndex;
+  scheduleData.events[originalIndex][field] = value;
+  
+  // In real implementation, would POST to GitHub API
+  console.log('Would save:', scheduleData);
+  localStorage.setItem('scheduleData', JSON.stringify(scheduleData));
+}
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js');
+}
+
+loadData();
+</script>
+</body>
+</html>
