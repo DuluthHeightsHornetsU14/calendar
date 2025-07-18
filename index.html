@@ -1,129 +1,494 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Thunderbolts Schedule</title>
-<link rel="manifest" href="manifest.json">
-<style>
-body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
-.container { max-width: 600px; margin: 0 auto; }
-.next-event { background: #007AFF; color: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; }
-.next-event h2 { margin: 0 0 10px 0; font-size: 24px; }
-.event { background: white; padding: 15px; margin-bottom: 10px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-.event-type { display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; margin-right: 8px; }
-.game { background: #FF3B30; color: white; }
-.practice { background: #34C759; color: white; }
-.event { background: #FF9500; color: white; }
-.time { font-weight: 600; }
-.location { color: #666; font-size: 14px; }
-.editable { border: 1px dashed #ccc; padding: 2px 4px; min-width: 50px; display: inline-block; }
-.coach-mode .editable:hover { background: #fffbcc; cursor: text; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Duluth Heights Hornets Schedule</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 100vw;
+            margin: 0 auto;
+            padding: 10px;
+            background-color: #f5f5f5;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2c5530;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 15px 0;
+            padding: 0 10px;
+        }
+        
+        .nav button {
+            background: #2c5530;
+            color: white;
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s;
+        }
+        
+        .nav button:hover {
+            background: #1e3b22;
+        }
+        
+        .nav button:active {
+            background: #0f1d11;
+        }
+        
+        #monthTitle {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2c5530;
+        }
+        
+        .calendar {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .calendar th {
+            background-color: #2c5530;
+            color: white;
+            padding: 12px 4px;
+            text-align: center;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        
+        .calendar td {
+            border: 1px solid #e0e0e0;
+            padding: 8px 4px;
+            vertical-align: top;
+            height: 80px;
+            position: relative;
+            background: white;
+        }
+        
+        .calendar td:first-child {
+            font-weight: 600;
+            color: #2c5530;
+        }
+        
+        .location {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #2c5530;
+            line-height: 1.1;
+            margin-bottom: 2px;
+        }
+        
+        .time {
+            font-size: 0.75rem;
+            color: #666;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+        
+        .details-btn {
+            background: #e8f5e8;
+            color: #2c5530;
+            border: 1px solid #2c5530;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            font-weight: 500;
+            width: 100%;
+            max-width: 60px;
+        }
+        
+        .details-btn:hover {
+            background: #d4f0d4;
+        }
+        
+        .details-btn:active {
+            background: #c0e8c0;
+        }
+        
+        #details-section {
+            margin-top: 20px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        #details-section h3 {
+            color: #2c5530;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        #details-content {
+            color: #333;
+            line-height: 1.4;
+            margin-bottom: 15px;
+        }
+        
+        #details-section button {
+            background: #2c5530;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        /* Mobile optimizations */
+        @media (max-width: 480px) {
+            body {
+                padding: 8px;
+            }
+            
+            h1 {
+                font-size: 1.3rem;
+                margin-bottom: 12px;
+            }
+            
+            .nav {
+                margin: 12px 0;
+                padding: 0 5px;
+            }
+            
+            .nav button {
+                width: 40px;
+                height: 40px;
+                font-size: 1.1rem;
+            }
+            
+            #monthTitle {
+                font-size: 1rem;
+            }
+            
+            .calendar th {
+                padding: 8px 2px;
+                font-size: 0.8rem;
+            }
+            
+            .calendar td {
+                height: 70px;
+                padding: 6px 2px;
+            }
+            
+            .location {
+                font-size: 0.7rem;
+            }
+            
+            .time {
+                font-size: 0.65rem;
+            }
+            
+            .details-btn {
+                font-size: 0.65rem;
+                padding: 3px 6px;
+                max-width: 50px;
+            }
+            
+            #details-section {
+                padding: 15px;
+                margin-top: 15px;
+            }
+        }
+        
+        /* Extra small screens */
+        @media (max-width: 360px) {
+            .calendar th {
+                font-size: 0.7rem;
+                padding: 6px 1px;
+            }
+            
+            .calendar td {
+                height: 65px;
+                padding: 4px 1px;
+            }
+            
+            .location {
+                font-size: 0.65rem;
+            }
+            
+            .time {
+                font-size: 0.6rem;
+            }
+            
+            .details-btn {
+                font-size: 0.6rem;
+                padding: 2px 4px;
+                max-width: 45px;
+            }
+        }
+    </style>
 </head>
 <body>
-<div class="container">
-  <h1 id="teamName">Loading...</h1>
-  <div class="next-event" id="nextEvent"></div>
-  <h2>Next 7 Days</h2>
-  <div id="schedule"></div>
-</div>
-
-<script>
-const urlParams = new URLSearchParams(window.location.search);
-const isCoach = urlParams.get('edit') === 'coach';
-if (isCoach) document.body.classList.add('coach-mode');
-
-let scheduleData = { teamName: "Thunderbolts", events: [] };
-
-async function loadData() {
-  try {
-    const response = await fetch('data.json');
-    if (response.ok) {
-      scheduleData = await response.json();
-      renderSchedule();
-    }
-  } catch (e) {
-    console.log('Loading from cache or defaults');
-    renderSchedule();
-  }
-}
-
-function renderSchedule() {
-  document.getElementById('teamName').textContent = scheduleData.teamName;
-  
-  const now = new Date();
-  const weekFromNow = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
-  
-  const upcomingEvents = scheduleData.events
-    .map(e => ({...e, dateObj: new Date(e.date)}))
-    .filter(e => e.dateObj >= now && e.dateObj <= weekFromNow)
-    .sort((a, b) => a.dateObj - b.dateObj);
-  
-  if (upcomingEvents.length > 0) {
-    const next = upcomingEvents[0];
-    document.getElementById('nextEvent').innerHTML = `
-      <h2>Next: ${next.type === 'game' ? 'Game' : next.type === 'practice' ? 'Practice' : 'Team Event'}</h2>
-      <div class="time">${formatDate(next.dateObj)} at ${next.time}</div>
-      <div class="location">${next.location}</div>
-      ${next.opponent ? `<div>vs ${next.opponent}</div>` : ''}
-    `;
-  }
-  
-  const scheduleHTML = upcomingEvents.map((event, index) => `
-    <div class="event">
-      <span class="event-type ${event.type}">${event.type.toUpperCase()}</span>
-      <span class="time ${isCoach ? 'editable' : ''}" data-field="date" data-index="${index}">${formatDate(event.dateObj)}</span>
-      at 
-      <span class="time ${isCoach ? 'editable' : ''}" data-field="time" data-index="${index}">${event.time}</span>
-      <div class="location ${isCoach ? 'editable' : ''}" data-field="location" data-index="${index}">${event.location}</div>
-      ${event.opponent ? `<div>vs <span class="${isCoach ? 'editable' : ''}" data-field="opponent" data-index="${index}">${event.opponent}</span></div>` : ''}
+    <h1>Duluth Heights Hornets U14B</h1>
+    
+    <div class="nav">
+        <button onclick="previousMonth()">←</button>
+        <span id="monthTitle">August 2025</span>
+        <button onclick="nextMonth()">→</button>
     </div>
-  `).join('');
-  
-  document.getElementById('schedule').innerHTML = scheduleHTML || '<p>No events scheduled for the next 7 days.</p>';
-  
-  if (isCoach) setupEditing();
-}
 
-function formatDate(date) {
-  const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  return `${days[date.getDay()]}, ${months[date.getMonth()]} ${date.getDate()}`;
-}
+    <!-- August Calendar - CORRECTED: August 1, 2025 is Friday -->
+    <div class="calendar-month" id="august">
+        <table class="calendar">
+            <tr>
+                <th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th>
+            </tr>
+            <tr>
+                <td></td><td></td><td></td><td></td><td></td>
+                <td>1
+                    <div class="location">Friday</div>
+                </td>
+                <td>2</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>4
+                    <div class="location">Arlington</div>
+                    <div class="time">7:00 PM</div>
+                    <button class="details-btn" onclick="showDetails('aug4')">Details</button>
+                </td>
+                <td>5</td><td>6</td><td>7</td><td>8</td><td>9</td>
+            </tr>
+            <tr>
+                <td>10</td>
+                <td>11
+                    <div class="location">Arlington</div>
+                    <div class="time">7:00 PM</div>
+                    <button class="details-btn" onclick="showDetails('aug11')">Details</button>
+                </td>
+                <td>12</td>
+                <td>13
+                    <div class="location">Arlington</div>
+                    <div class="time">5:30 PM</div>
+                    <button class="details-btn" onclick="showDetails('aug13')">Details</button>
+                </td>
+                <td>14</td><td>15</td><td>16</td>
+            </tr>
+            <tr>
+                <td>17</td>
+                <td>18
+                    <div class="location">Jean Duluth</div>
+                    <div class="time">7:00 PM</div>
+                    <button class="details-btn" onclick="showDetails('aug18')">Details</button>
+                </td>
+                <td>19</td><td>20</td><td>21</td><td>22</td><td>23</td>
+            </tr>
+            <tr>
+                <td>24</td><td>25</td><td>26</td>
+                <td>27
+                    <div class="location">Arlington</div>
+                    <div class="time">5:30 PM</div>
+                    <button class="details-btn" onclick="showDetails('aug27')">Details</button>
+                </td>
+                <td>28</td><td>29</td><td>30</td>
+            </tr>
+            <tr>
+                <td>31</td><td></td><td></td><td></td><td></td><td></td><td></td>
+            </tr>
+        </table>
+    </div>
 
-function setupEditing() {
-  document.querySelectorAll('.editable').forEach(el => {
-    el.contentEditable = true;
-    el.addEventListener('blur', saveEdit);
-  });
-}
+    <!-- September Calendar -->
+    <div class="calendar-month" id="september" style="display: none;">
+        <table class="calendar">
+            <tr>
+                <th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th>
+            </tr>
+            <tr>
+                <td></td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td>
+            </tr>
+            <tr>
+                <td>7</td>
+                <td>8
+                    <div class="location">Superior HS</div>
+                    <div class="time">5:00 PM</div>
+                    <button class="details-btn" onclick="showDetails('sep8')">Details</button>
+                </td>
+                <td>9</td><td>10</td><td>11</td><td>12</td><td>13</td>
+            </tr>
+            <tr>
+                <td>14
+                    <div class="location">Arlington</div>
+                    <div class="time">1:30 PM</div>
+                    <button class="details-btn" onclick="showDetails('sep14')">Details</button>
+                </td>
+                <td>15</td><td>16</td>
+                <td>17
+                    <div class="location">Superior HS</div>
+                    <div class="time">5:00 PM</div>
+                    <button class="details-btn" onclick="showDetails('sep17')">Details</button>
+                </td>
+                <td>18</td><td>19</td><td>20</td>
+            </tr>
+            <tr>
+                <td>21</td><td>22</td><td>23</td>
+                <td>24
+                    <div class="location">Arlington</div>
+                    <div class="time">TBD</div>
+                    <button class="details-btn" onclick="showDetails('sep24')">Details</button>
+                </td>
+                <td>25</td><td>26</td><td>27</td>
+            </tr>
+            <tr>
+                <td>28</td><td>29</td><td>30</td><td></td><td></td><td></td><td></td>
+            </tr>
+        </table>
+    </div>
 
-async function saveEdit(e) {
-  const field = e.target.dataset.field;
-  const index = parseInt(e.target.dataset.index);
-  const value = e.target.textContent.trim();
-  
-  const now = new Date();
-  const weekFromNow = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
-  const upcomingEvents = scheduleData.events
-    .map((e, i) => ({...e, originalIndex: i, dateObj: new Date(e.date)}))
-    .filter(e => e.dateObj >= now && e.dateObj <= weekFromNow)
-    .sort((a, b) => a.dateObj - b.dateObj);
-  
-  const originalIndex = upcomingEvents[index].originalIndex;
-  scheduleData.events[originalIndex][field] = value;
-  
-  // In real implementation, would POST to GitHub API
-  console.log('Would save:', scheduleData);
-  localStorage.setItem('scheduleData', JSON.stringify(scheduleData));
-}
+    <!-- October Calendar -->
+    <div class="calendar-month" id="october" style="display: none;">
+        <table class="calendar">
+            <tr>
+                <th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th>
+            </tr>
+            <tr>
+                <td></td><td></td><td></td>
+                <td>1
+                    <div class="location">Playoffs</div>
+                    <div class="time">TBD</div>
+                    <button class="details-btn" onclick="showDetails('oct1')">Details</button>
+                </td>
+                <td>2
+                    <div class="location">Playoffs</div>
+                    <div class="time">TBD</div>
+                    <button class="details-btn" onclick="showDetails('oct2')">Details</button>
+                </td>
+                <td>3
+                    <div class="location">Playoffs</div>
+                    <div class="time">TBD</div>
+                    <button class="details-btn" onclick="showDetails('oct3')">Details</button>
+                </td>
+                <td>4
+                    <div class="location">Playoffs</div>
+                    <div class="time">TBD</div>
+                    <button class="details-btn" onclick="showDetails('oct4')">Details</button>
+                </td>
+            </tr>
+            <tr>
+                <td>5
+                    <div class="location">Playoffs</div>
+                    <div class="time">TBD</div>
+                    <button class="details-btn" onclick="showDetails('oct5')">Details</button>
+                </td>
+                <td>6</td><td>7</td><td>8</td><td>9</td>
+                <td>10
+                    <div class="location">Final Four</div>
+                    <div class="time">TBD</div>
+                    <button class="details-btn" onclick="showDetails('oct10')">Details</button>
+                </td>
+                <td>11
+                    <div class="location">Final Four</div>
+                    <div class="time">TBD</div>
+                    <button class="details-btn" onclick="showDetails('oct11')">Details</button>
+                </td>
+            </tr>
+            <tr>
+                <td>12
+                    <div class="location">Final Four</div>
+                    <div class="time">TBD</div>
+                    <button class="details-btn" onclick="showDetails('oct12')">Details</button>
+                </td>
+                <td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td>
+            </tr>
+            <tr>
+                <td>19</td><td>20</td><td>21</td><td>22</td><td>23</td><td>24</td><td>25</td>
+            </tr>
+            <tr>
+                <td>26</td><td>27</td><td>28</td><td>29</td><td>30</td><td>31</td><td></td>
+            </tr>
+        </table>
+    </div>
 
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js');
-}
+    <!-- Details Section -->
+    <div id="details-section" style="display: none;">
+        <h3>Game Details</h3>
+        <div id="details-content"></div>
+        <button onclick="hideDetails()">Close</button>
+    </div>
 
-loadData();
-</script>
+    <script>
+        let currentMonth = 0;
+        const months = ['august', 'september', 'october'];
+        const monthTitles = ['August 2025', 'September 2025', 'October 2025'];
+
+        function showMonth(monthIndex) {
+            months.forEach(month => {
+                document.getElementById(month).style.display = 'none';
+            });
+            document.getElementById(months[monthIndex]).style.display = 'block';
+            document.getElementById('monthTitle').textContent = monthTitles[monthIndex];
+        }
+
+        function previousMonth() {
+            if (currentMonth > 0) {
+                currentMonth--;
+                showMonth(currentMonth);
+            }
+        }
+
+        function nextMonth() {
+            if (currentMonth < 2) {
+                currentMonth++;
+                showMonth(currentMonth);
+            }
+        }
+
+        function showDetails(gameId) {
+            const details = {
+                'aug4': 'vs Lakeside Lester Park<br>Arlington Soccer Complex Field 2<br>August 4th at 7:00 PM',
+                'aug11': 'vs Congdon Park<br>Arlington Soccer Complex Field 2<br>August 11th at 7:00 PM',
+                'aug13': 'vs Superior<br>Arlington Soccer Complex Field 3<br>August 13th at 5:30 PM',
+                'aug18': 'vs Lakeside Lester Park<br>Jean Duluth Soccer Field 1<br>August 18th at 7:00 PM',
+                'aug27': 'vs Piedmont Lincoln Park<br>Arlington Soccer Complex Field 3<br>August 27th at 5:30 PM',
+                'sep8': 'vs Superior<br>Superior High School Field 3<br>September 8th at 5:00 PM',
+                'sep14': 'vs Superior<br>Arlington Soccer Complex Field 2<br>September 14th at 1:30 PM',
+                'sep17': 'vs Superior<br>Superior High School Field 3<br>September 17th at 5:00 PM',
+                'sep24': 'vs Chester Park<br>Arlington Soccer Complex Field 2<br>September 24th - Time TBD',
+                'oct1': 'Playoffs October 1-5<br>Location and times TBD',
+                'oct2': 'Playoffs October 1-5<br>Location and times TBD',
+                'oct3': 'Playoffs October 1-5<br>Location and times TBD',
+                'oct4': 'Playoffs October 1-5<br>Location and times TBD',
+                'oct5': 'Playoffs October 1-5<br>Location and times TBD',
+                'oct10': 'Final Four October 10-12<br>Location and times TBD',
+                'oct11': 'Final Four October 10-12<br>Location and times TBD',
+                'oct12': 'Final Four October 10-12<br>Location and times TBD'
+            };
+            
+            document.getElementById('details-content').innerHTML = details[gameId];
+            document.getElementById('details-section').style.display = 'block';
+        }
+
+        function hideDetails() {
+            document.getElementById('details-section').style.display = 'none';
+        }
+    </script>
 </body>
 </html>
