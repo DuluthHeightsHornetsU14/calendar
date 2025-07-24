@@ -132,6 +132,32 @@
             background: #c0e8c0;
         }
         
+        .game-day {
+            background-color: #E6D4F1 !important; /* Light purple */
+        }
+        
+        .practice-day {
+            background-color: #FFD4D4 !important; /* Light red */
+        }
+        
+        .playoff-day {
+            background-color: #FFF4D4 !important; /* Light yellow */
+        }
+        
+        .picture-day {
+            background-color: #FFD4E8 !important; /* Light pink */
+        }
+        
+        .possible-practice {
+            background: repeating-linear-gradient(
+                45deg,
+                #FFD4D4,
+                #FFD4D4 10px,
+                white 10px,
+                white 20px
+            ) !important;
+        }
+        
         #details-section {
             margin-top: 20px;
             background: white;
@@ -255,7 +281,7 @@
         <button onclick="nextMonth()">→</button>
     </div>
 
-    <!-- August Calendar - CORRECTED: August 1, 2025 is Friday -->
+    <!-- August Calendar -->
     <div class="calendar-month" id="august">
         <table class="calendar">
             <tr>
@@ -263,52 +289,99 @@
             </tr>
             <tr>
                 <td></td><td></td><td></td><td></td><td></td>
-                <td>1
-                    <div class="location">Friday</div>
+                <td>1</td>
+                <td class="possible-practice">2
+                    <div class="location">Possible Practice</div>
+                    <div class="time">10:00 AM</div>
                 </td>
-                <td>2</td>
             </tr>
             <tr>
-                <td>3</td>
-                <td>4
+                <td class="possible-practice">3
+                    <div class="location">Possible Practice</div>
+                    <div class="time">10:00 AM</div>
+                </td>
+                <td class="game-day">4
                     <div class="location">Arlington</div>
                     <div class="time">7:00 PM</div>
                     <button class="details-btn" onclick="showDetails('aug4')">Details</button>
                 </td>
-                <td>5</td><td>6</td><td>7</td><td>8</td><td>9</td>
+                <td>5</td>
+                <td class="practice-day">6
+                    <div class="location">Practice</div>
+                    <div class="time">6:00 PM</div>
+                    <button class="details-btn" onclick="showDetails('aug6')">Details</button>
+                </td>
+                <td>7</td><td>8</td>
+                <td class="possible-practice">9
+                    <div class="location">Possible Practice</div>
+                    <div class="time">10:00 AM</div>
+                </td>
             </tr>
             <tr>
-                <td>10</td>
-                <td>11
+                <td class="possible-practice">10
+                    <div class="location">Possible Practice</div>
+                    <div class="time">10:00 AM</div>
+                </td>
+                <td class="game-day picture-day">11
                     <div class="location">Arlington</div>
                     <div class="time">7:00 PM</div>
-                    <button class="details-btn" onclick="showDetails('aug11')">Details</button>
+                    <button class="details-btn" onclick="showDetails('aug11')">Picture Day</button>
                 </td>
                 <td>12</td>
-                <td>13
+                <td class="game-day">13
                     <div class="location">Arlington</div>
                     <div class="time">5:30 PM</div>
                     <button class="details-btn" onclick="showDetails('aug13')">Details</button>
                 </td>
-                <td>14</td><td>15</td><td>16</td>
+                <td>14</td><td>15</td>
+                <td class="possible-practice">16
+                    <div class="location">Possible Practice</div>
+                    <div class="time">10:00 AM</div>
+                </td>
             </tr>
             <tr>
-                <td>17</td>
-                <td>18
+                <td class="possible-practice">17
+                    <div class="location">Possible Practice</div>
+                    <div class="time">10:00 AM</div>
+                </td>
+                <td class="game-day">18
                     <div class="location">Jean Duluth</div>
                     <div class="time">7:00 PM</div>
                     <button class="details-btn" onclick="showDetails('aug18')">Details</button>
                 </td>
-                <td>19</td><td>20</td><td>21</td><td>22</td><td>23</td>
+                <td>19</td>
+                <td class="practice-day">20
+                    <div class="location">Practice</div>
+                    <div class="time">6:00 PM</div>
+                    <button class="details-btn" onclick="showDetails('aug20')">Details</button>
+                </td>
+                <td>21</td><td>22</td>
+                <td class="possible-practice">23
+                    <div class="location">Possible Practice</div>
+                    <div class="time">10:00 AM</div>
+                </td>
             </tr>
             <tr>
-                <td>24</td><td>25</td><td>26</td>
-                <td>27
+                <td class="possible-practice">24
+                    <div class="location">Possible Practice</div>
+                    <div class="time">10:00 AM</div>
+                </td>
+                <td class="practice-day">25
+                    <div class="location">Practice</div>
+                    <div class="time">6:00 PM</div>
+                    <button class="details-btn" onclick="showDetails('aug25')">Details</button>
+                </td>
+                <td>26</td>
+                <td class="game-day">27
                     <div class="location">Arlington</div>
                     <div class="time">5:30 PM</div>
                     <button class="details-btn" onclick="showDetails('aug27')">Details</button>
                 </td>
-                <td>28</td><td>29</td><td>30</td>
+                <td>28</td><td>29</td>
+                <td class="possible-practice">30
+                    <div class="location">Possible Practice</div>
+                    <div class="time">10:00 AM</div>
+                </td>
             </tr>
             <tr>
                 <td>31</td><td></td><td></td><td></td><td></td><td></td><td></td>
@@ -323,42 +396,88 @@
                 <th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th>
             </tr>
             <tr>
-                <td></td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td>
+                <td></td>
+                <td>1</td><td>2</td><td>3</td><td>4</td><td>5</td>
+                <td class="possible-practice">6
+                    <div class="location">Possible Practice</div>
+                    <div class="time">10:00 AM</div>
+                </td>
             </tr>
             <tr>
-                <td>7</td>
-                <td>8
+                <td class="possible-practice">7
+                    <div class="location">Possible Practice</div>
+                    <div class="time">10:00 AM</div>
+                </td>
+                <td class="game-day">8
                     <div class="location">Superior HS</div>
                     <div class="time">5:00 PM</div>
                     <button class="details-btn" onclick="showDetails('sep8')">Details</button>
                 </td>
-                <td>9</td><td>10</td><td>11</td><td>12</td><td>13</td>
+                <td>9</td>
+                <td class="practice-day">10
+                    <div class="location">Practice</div>
+                    <div class="time">6:00 PM</div>
+                    <button class="details-btn" onclick="showDetails('sep10')">Details</button>
+                </td>
+                <td>11</td><td>12</td>
+                <td>13</td>
             </tr>
             <tr>
-                <td>14
+                <td class="game-day">14
                     <div class="location">Arlington</div>
                     <div class="time">1:30 PM</div>
                     <button class="details-btn" onclick="showDetails('sep14')">Details</button>
                 </td>
-                <td>15</td><td>16</td>
-                <td>17
+                <td class="practice-day">15
+                    <div class="location">Practice</div>
+                    <div class="time">6:00 PM</div>
+                    <button class="details-btn" onclick="showDetails('sep15')">Details</button>
+                </td>
+                <td>16</td>
+                <td class="game-day">17
                     <div class="location">Superior HS</div>
                     <div class="time">5:00 PM</div>
                     <button class="details-btn" onclick="showDetails('sep17')">Details</button>
                 </td>
-                <td>18</td><td>19</td><td>20</td>
+                <td>18</td><td>19</td>
+                <td class="possible-practice">20
+                    <div class="location">Possible Practice</div>
+                    <div class="time">10:00 AM</div>
+                </td>
             </tr>
             <tr>
-                <td>21</td><td>22</td><td>23</td>
-                <td>24
+                <td class="possible-practice">21
+                    <div class="location">Possible Practice</div>
+                    <div class="time">10:00 AM</div>
+                </td>
+                <td class="practice-day">22
+                    <div class="location">Practice</div>
+                    <div class="time">6:00 PM</div>
+                    <button class="details-btn" onclick="showDetails('sep22')">Details</button>
+                </td>
+                <td>23</td>
+                <td class="game-day">24
                     <div class="location">Arlington</div>
                     <div class="time">TBD</div>
                     <button class="details-btn" onclick="showDetails('sep24')">Details</button>
                 </td>
-                <td>25</td><td>26</td><td>27</td>
+                <td>25</td><td>26</td>
+                <td class="possible-practice">27
+                    <div class="location">Possible Practice</div>
+                    <div class="time">10:00 AM</div>
+                </td>
             </tr>
             <tr>
-                <td>28</td><td>29</td><td>30</td><td></td><td></td><td></td><td></td>
+                <td class="possible-practice">28
+                    <div class="location">Possible Practice</div>
+                    <div class="time">10:00 AM</div>
+                </td>
+                <td class="practice-day">29
+                    <div class="location">Practice</div>
+                    <div class="time">6:00 PM</div>
+                    <button class="details-btn" onclick="showDetails('sep29')">Details</button>
+                </td>
+                <td>30</td><td></td><td></td><td></td><td></td>
             </tr>
         </table>
     </div>
@@ -371,47 +490,47 @@
             </tr>
             <tr>
                 <td></td><td></td><td></td>
-                <td>1
+                <td class="playoff-day">1
                     <div class="location">Playoffs</div>
                     <div class="time">TBD</div>
                     <button class="details-btn" onclick="showDetails('oct1')">Details</button>
                 </td>
-                <td>2
+                <td class="playoff-day">2
                     <div class="location">Playoffs</div>
                     <div class="time">TBD</div>
                     <button class="details-btn" onclick="showDetails('oct2')">Details</button>
                 </td>
-                <td>3
+                <td class="playoff-day">3
                     <div class="location">Playoffs</div>
                     <div class="time">TBD</div>
                     <button class="details-btn" onclick="showDetails('oct3')">Details</button>
                 </td>
-                <td>4
+                <td class="playoff-day">4
                     <div class="location">Playoffs</div>
                     <div class="time">TBD</div>
                     <button class="details-btn" onclick="showDetails('oct4')">Details</button>
                 </td>
             </tr>
             <tr>
-                <td>5
+                <td class="playoff-day">5
                     <div class="location">Playoffs</div>
                     <div class="time">TBD</div>
                     <button class="details-btn" onclick="showDetails('oct5')">Details</button>
                 </td>
                 <td>6</td><td>7</td><td>8</td><td>9</td>
-                <td>10
+                <td class="playoff-day">10
                     <div class="location">Final Four</div>
                     <div class="time">TBD</div>
                     <button class="details-btn" onclick="showDetails('oct10')">Details</button>
                 </td>
-                <td>11
+                <td class="playoff-day">11
                     <div class="location">Final Four</div>
                     <div class="time">TBD</div>
                     <button class="details-btn" onclick="showDetails('oct11')">Details</button>
                 </td>
             </tr>
             <tr>
-                <td>12
+                <td class="playoff-day">12
                     <div class="location">Final Four</div>
                     <div class="time">TBD</div>
                     <button class="details-btn" onclick="showDetails('oct12')">Details</button>
@@ -427,7 +546,6 @@
         </table>
     </div>
 
-    <!-- Details Section -->
     <div id="details-section" style="display: none;">
         <h3>Game Details</h3>
         <div id="details-content"></div>
@@ -437,14 +555,13 @@
     <script>
         let currentMonth = 0;
         const months = ['august', 'september', 'october'];
-        const monthTitles = ['August 2025', 'September 2025', 'October 2025'];
+        const monthNames = ['August 2025', 'September 2025', 'October 2025'];
 
         function showMonth(monthIndex) {
-            months.forEach(month => {
-                document.getElementById(month).style.display = 'none';
+            months.forEach((month, index) => {
+                document.getElementById(month).style.display = index === monthIndex ? 'block' : 'none';
             });
-            document.getElementById(months[monthIndex]).style.display = 'block';
-            document.getElementById('monthTitle').textContent = monthTitles[monthIndex];
+            document.getElementById('monthTitle').textContent = monthNames[monthIndex];
         }
 
         function previousMonth() {
@@ -464,14 +581,21 @@
         function showDetails(gameId) {
             const details = {
                 'aug4': 'vs Lakeside Lester Park<br>Arlington Soccer Complex Field 2<br>August 4th at 7:00 PM',
-                'aug11': 'vs Congdon Park<br>Arlington Soccer Complex Field 2<br>August 11th at 7:00 PM',
+                'aug6': 'Practice<br>Location TBD<br>August 6th at 6:00 PM',
+                'aug11': 'vs Congdon Park<br>Arlington Soccer Complex Field 2<br>August 11th at 7:00 PM<br><br><strong>Picture Day!</strong>',
                 'aug13': 'vs Superior<br>Arlington Soccer Complex Field 3<br>August 13th at 5:30 PM',
                 'aug18': 'vs Lakeside Lester Park<br>Jean Duluth Soccer Field 1<br>August 18th at 7:00 PM',
+                'aug20': 'Practice<br>Location TBD<br>August 20th at 6:00 PM',
+                'aug25': 'Practice<br>Location TBD<br>August 25th at 6:00 PM',
                 'aug27': 'vs Piedmont Lincoln Park<br>Arlington Soccer Complex Field 3<br>August 27th at 5:30 PM',
                 'sep8': 'vs Superior<br>Superior High School Field 3<br>September 8th at 5:00 PM',
+                'sep10': 'Practice<br>Location TBD<br>September 10th at 6:00 PM',
                 'sep14': 'vs Superior<br>Arlington Soccer Complex Field 2<br>September 14th at 1:30 PM',
+                'sep15': 'Practice<br>Location TBD<br>September 15th at 6:00 PM',
                 'sep17': 'vs Superior<br>Superior High School Field 3<br>September 17th at 5:00 PM',
+                'sep22': 'Practice<br>Location TBD<br>September 22nd at 6:00 PM',
                 'sep24': 'vs Chester Park<br>Arlington Soccer Complex Field 2<br>September 24th - Time TBD',
+                'sep29': 'Practice<br>Location TBD<br>September 29th at 6:00 PM',
                 'oct1': 'Playoffs October 1-5<br>Location and times TBD',
                 'oct2': 'Playoffs October 1-5<br>Location and times TBD',
                 'oct3': 'Playoffs October 1-5<br>Location and times TBD',
